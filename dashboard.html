@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+
+<header>
+    <h1>Your Dashboard</h1>
+</header>
+
+<main class="container">
+
+    <section>
+        <h2>Live Visitors</h2>
+        <table>
+            <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Page</th>
+                  <th>IP Address</th>
+                  <th>User Agent</th>
+                  <th>City</th>  <!-- Add a new column for City -->
+                  <th>Region</th>  <!-- Add a new column for Region -->
+                  <th>Country</th>  <!-- Add a new column for Country -->
+               </tr>
+            </thead>
+            <tbody id="liveVisitorTableBody">
+                <!-- Live visitor data will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Add more sections as needed -->
+
+</main>
+
+<footer>
+    &copy; 2023 Your Company Name
+</footer>
+
+<script>
+// Function to fetch and display live visitor data
+function fetchLiveVisitorData() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'dashboard_backend.php', true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            // Process and display live visitor data
+            var liveVisitorData = JSON.parse(xhr.responseText);
+            console.log(liveVisitorData);  // Log the received data for debugging
+            displayLiveVisitorData(liveVisitorData);
+        }
+    };
+    xhr.send();
+}
+
+// Function to display live visitor data in the table
+function displayLiveVisitorData(data) {
+    var tableBody = document.getElementById('liveVisitorTableBody');
+    tableBody.innerHTML = '';
+
+    data.forEach(function(visitor) {
+        var row = tableBody.insertRow();
+        var timestampCell = row.insertCell(0);
+        var pageCell = row.insertCell(1);
+        var ipCell = row.insertCell(2);
+        var userAgentCell = row.insertCell(3);
+
+        // Convert timestamp to a more user-friendly format
+        var formattedTimestamp = new Date(visitor.timestamp.replace(/-/g, '/')).toLocaleString();
+
+        timestampCell.innerHTML = formattedTimestamp;
+        pageCell.innerHTML = visitor.page;
+        ipCell.innerHTML = visitor.ip;
+        userAgentCell.innerHTML = visitor.userAgent;
+    });
+}
+
+
+
+// Fetch live visitor data when the DOM is ready and every 5 seconds
+document.addEventListener('DOMContentLoaded', function() {
+    fetchLiveVisitorData();
+    setInterval(fetchLiveVisitorData, 5000); // Refresh every 5 seconds
+});
+
+
+</script>
+
+</body>
+</html>

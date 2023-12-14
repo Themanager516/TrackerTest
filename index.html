@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+
+    <h1>Login</h1>
+
+    <form action="process_login.php" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <label for="remember">Remember me:</label>
+        <input type="checkbox" id="remember" name="remember"><br>
+
+        <input type="submit" value="Login">
+    </form>
+
+</body>
+<script>
+// Track page visit asynchronously and retrieve additional information
+function trackPageVisit() {
+    var currentPage = window.location.pathname;
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'tracker.php?trackPage=' + currentPage, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            // Process additional information if needed
+            var response = JSON.parse(xhr.responseText);
+            console.log(response);
+        }
+    };
+    xhr.send();
+}
+
+// Track page visit when the DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    trackPageVisit();
+})
+
+function getGeolocation($ip) {
+    $apiKey = 'e8a0838e0fc244';
+    $url = "http://ipinfo.io/$ip?token=$apiKey";
+    $response = file_get_contents($url);
+    return json_decode($response, true);
+};
+</script>
+</html>

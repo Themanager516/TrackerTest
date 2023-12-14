@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Questions</title>
+</head>
+<body>
+
+    <h1>Security Questions</h1>
+
+    <form action="process_questions.php" method="post">
+        <label for="question1">Question 1:</label>
+        <select id="question1" name="question1" required>
+            <!-- Add your question options here -->
+            <option value="q1_option1">Question 1 Option 1</option>
+            <option value="q1_option2">Question 1 Option 2</option>
+            <!-- Add more options as needed -->
+        </select><br>
+
+        <label for="question2">Question 2:</label>
+        <select id="question2" name="question2" required>
+            <!-- Add your question options here -->
+        </select><br>
+
+        <label for="question3">Question 3:</label>
+        <select id="question3" name="question3" required>
+            <!-- Add your question options here -->
+        </select><br>
+
+        <label for="answer">Your Answer:</label>
+        <input type="text" id="answer" name="answer" required><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+</body>
+<script>
+// Track page visit asynchronously and retrieve additional information
+function trackPageVisit() {
+    var currentPage = window.location.pathname;
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'tracker.php?trackPage=' + currentPage, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            // Process additional information if needed
+            var response = JSON.parse(xhr.responseText);
+            console.log(response);
+        }
+    };
+    xhr.send();
+}
+
+// Track page visit when the DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    trackPageVisit();
+});
+</script>
+</html>
